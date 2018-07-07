@@ -9,10 +9,8 @@ MongoClient.connect(url, function(err, db) {
   console.log("Connected successfully to server");
 
   insertDocuments(db, function() {
-    updateDocument(db, function() {
-      removeDocument(db, function() {
-        db.close();
-      });
+    indexCollection(db, function() {
+      db.close();
     });
   });
 });
@@ -68,3 +66,14 @@ var removeDocument = function(db, callback) {
     callback(result);
   });
 }
+
+var indexCollection = function(db, callback) {
+  db.collection('documents').createIndex(
+    { "a": 1 },
+      null,
+      function(err, results) {
+        console.log(results);
+        callback();
+      }
+   );
+};
